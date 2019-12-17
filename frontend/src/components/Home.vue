@@ -2,13 +2,28 @@
   <div id="home">
     <div id="main">
       <section class="one dark cover">
-        <div class="container">
-          <header>
-            <h2 class="alt">Main</h2>
-          </header>
-          <footer>
-            <a href="https://github.com/hyemii/hmyu.git" class="button scrolly">Github</a>
-          </footer>
+        <div class="container" align="center">
+          <h2>Bookmark</h2><br>
+            <table style="width: 60%; border: 1px solid #222729">
+              <tr>
+                <th>Login Page</th>
+              </tr>
+              <tr v-for="(bookmark, index) in login_bookmarks" v-bind:key="index">
+                <td>
+                  <a v-bind:href="bookmark.href">{{bookmark.desc}}</a>
+                </td>
+              </tr>
+            </table>
+            <table style="width: 60%; border: 1px solid #222729">
+              <tr>
+                <th>Guide Page</th>
+              </tr>
+              <tr v-for="(bookmark, index) in guide_bookmarks" v-bind:key="index">
+                <td>
+                  <a v-bind:href="bookmark.href">{{bookmark.desc}}</a>
+                </td>
+              </tr>
+            </table>
         </div>
       </section>
     </div>
@@ -18,7 +33,19 @@
 <script>
 export default {
   name: 'Home',
-  methods: {
+  data () {
+    return {
+      login_bookmarks: [
+        {href: 'https://github.com/hyemii/hmyu.git', desc: 'GitHub'},
+        {href: 'http://13.209.101.187:9090', desc: 'Jenkins'},
+        {href: 'https://us-east-1.signin.aws.amazon.com/oauth?response_type=code&client_id=arn%3Aaws%3Aiam%3A%3A015428540659%3Auser%2Fhomepage&redirect_uri=https%3A%2F%2Fconsole.aws.amazon.com%2Fconsole%2Fhome%3Fstate%3DhashArgs%2523%26isauthcode%3Dtrue&forceMobileLayout=0&forceMobileApp=0', desc: 'AWS'}
+      ],
+      guide_bookmarks: [
+        {href: 'https://kr.vuejs.org/v2/guide/index.html', desc: 'Vue.js'},
+        {href: 'https://bootstrap-vue.js.org/', desc: 'Bootstrap Vue'},
+        {href: 'https://fontawesome.com/v4.7.0/icons/', desc: 'Fontawesome'}
+      ]
+    }
   }
 }
 </script>
