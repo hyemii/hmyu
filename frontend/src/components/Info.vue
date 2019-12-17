@@ -3,10 +3,11 @@
     <div id="main">
       <section class="three">
         <div class="container">
-          <header>
-            <h2>Info</h2>
-          </header>
-          <p>Info</p>
+          <img src="../../static/img/information.png" style="width: 50%">
+          <h2>Spring boot + Vue.js Project</h2><br>
+          <p><a href="https://github.com/hyemii/hmyu">https://github.com/hyemii/hmyu</a> <br>
+          site template designed by <a href="http://html5up.net">HTML5 UP</a> <br>
+          </p>
         </div>
       </section>
     </div>
