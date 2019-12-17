@@ -42,7 +42,10 @@ def GradleBuild() {
 def NpmBuild() {
     stage('Npm Build') {
         dir('frontend') {
-            sh "npm run build"
+            env.NODEJS_HOME = "${tool 'nodejs'}"
+            // on linux / mac
+            env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
+            sh "npm --version"
         }
     }
 }
