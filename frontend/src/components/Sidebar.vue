@@ -40,7 +40,7 @@ export default {
   name: 'Sidebar ',
   methods: {
     click_toggle () {
-      document.body.className = document.body.className.replace('header-visible', '');
+      document.body.className = document.body.className.replace('header-visible', '')
     }
   }
 }

@@ -7,7 +7,7 @@
             <h2 class="alt">Main</h2>
           </header>
           <footer>
-            <a href="https://github.com/hyemii/portfolio" class="button scrolly">Github</a>
+            <a href="https://github.com/hyemii/hmyu.git" class="button scrolly">Github</a>
           </footer>
         </div>
       </section>
