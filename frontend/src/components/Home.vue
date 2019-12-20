@@ -2,28 +2,18 @@
   <div id="home">
     <div id="main">
       <section class="one dark cover">
-        <div class="container" align="center">
-          <h2>Bookmark</h2><br>
-            <table style="width: 60%; border: 1px solid #222729">
-              <tr>
-                <th>Login Page</th>
-              </tr>
-              <tr v-for="(bookmark, index) in login_bookmarks" v-bind:key="index">
-                <td>
-                  <a v-bind:href="bookmark.href">{{bookmark.desc}}</a>
-                </td>
-              </tr>
-            </table>
-            <table style="width: 60%; border: 1px solid #222729">
-              <tr>
-                <th>Guide Page</th>
-              </tr>
-              <tr v-for="(bookmark, index) in guide_bookmarks" v-bind:key="index">
-                <td>
-                  <a v-bind:href="bookmark.href">{{bookmark.desc}}</a>
-                </td>
-              </tr>
-            </table>
+        <div class="container" align="center" v-if="user_type !== 'G' && user_type !== 'A'">
+          <h2>LOGIN</h2>
+          <div class="login-input" align="center">
+            <input type="text" class="form-control" v-model="user_id" placeholder="ID"/>
+            <input type="password" class="form-control" v-model="user_pwd" placeholder="Password"/>
+            <br>
+            <button type="button" @click="login">Login</button>
+            <button type="button" @click="guestLogin">Guest</button>
+          </div>
+        </div>
+        <div class="container" v-else>
+          <h2>안녕하세요! {{this.$cookies.get('user_id')}} 님</h2>
         </div>
       </section>
     </div>
@@ -35,20 +25,59 @@ export default {
   name: 'Home',
   data () {
     return {
-      login_bookmarks: [
-        {href: 'https://github.com/hyemii/hmyu.git', desc: 'GitHub'},
-        {href: 'http://13.209.101.187:9090', desc: 'Jenkins'},
-        {href: 'https://us-east-1.signin.aws.amazon.com/oauth?response_type=code&client_id=arn%3Aaws%3Aiam%3A%3A015428540659%3Auser%2Fhomepage&redirect_uri=https%3A%2F%2Fconsole.aws.amazon.com%2Fconsole%2Fhome%3Fstate%3DhashArgs%2523%26isauthcode%3Dtrue&forceMobileLayout=0&forceMobileApp=0', desc: 'AWS'}
-      ],
-      guide_bookmarks: [
-        {href: 'https://kr.vuejs.org/v2/guide/index.html', desc: 'Vue.js'},
-        {href: 'https://bootstrap-vue.js.org/', desc: 'Bootstrap Vue'},
-        {href: 'https://fontawesome.com/v4.7.0/icons/', desc: 'Fontawesome'}
-      ]
+      user_id: '',
+      user_pwd: '',
+      user_type: this.$cookies.get('user')
+    }
+  },
+  methods: {
+    guestLogin () {
+      this.$cookies.set('user', 'G')
+      this.$cookies.set('user_id', 'guest')
+      this.$router.go()
+    },
+    login () {
+      if (!this.user_id) {
+        alert('아이디를 입력하세요.')
+        return false
+      }
+
+      if (!this.user_pwd) {
+        alert('비밀번호를 입력하세요.')
+        return false
+      }
+
+      this.$http.get(
+        'http://13.209.101.187:8080' + '/user/' + this.user_id
+      ).then(result => {
+        console.log('get user', result)
+        if (result.status === 200) {
+          if (this.user_pwd === result.data.userPwd) {
+            this.$cookies.set('user', result.data.userType)
+            this.$cookies.set('user_id', result.data.userId)
+          }
+          this.$router.go()
+        }
+      }).catch(reason => {
+        console.log('error login', reason.response)
+        alert('로그인 실패')
+      })
     }
   }
 }
 </script>
 
 <style scoped>
+  .container {
+    margin-top: 12%;
+  }
+
+  .login-input {
+    margin: 3%;
+    padding: 5px;
+  }
+
+  input {
+    width: 220px;
+  }
 </style>
