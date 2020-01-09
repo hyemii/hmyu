@@ -6,12 +6,18 @@ import Posts from '@/components/Posts'
 import Post from '@/components/Post'
 import CreatePost from '@/components/CreatePost'
 import Info from '@/components/Info'
+import PageNotFound from '@/components/PageNotFound'
 
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '*',
+      name: 'PageNotFound',
+      component: PageNotFound
+    },
     {
       path: '/',
       name: 'Home',

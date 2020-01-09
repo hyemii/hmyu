@@ -17,8 +17,8 @@
             <li><router-link :to="'/posts'" tag="a" @click.native="click_toggle"><span class="icon solid fa-archive">Posts</span></router-link></li>
             <li><router-link :to="'/bookmark'" tag="a" @click.native="click_toggle"><span class="icon solid fa-bookmark">Bookmark</span></router-link></li>
             <li><router-link :to="'/info'" tag="a" @click.native="click_toggle"><span class="icon solid fa-cog">Info</span></router-link></li>
-            <li><router-link :to="'/'" tag="a" @click.native="logout">
-              <span v-if="user_type === 'G' || user_type === 'A'">{{this.$cookies.get('user_id')}} Logout</span>
+            <li v-if="user_type === 'G' || user_type === 'A'"><router-link :to="'/'" tag="a" @click.native="logout" class="no">
+              <span class="icon solid fa-lock no">{{this.$cookies.get('user_id')}} Logout</span>
             </router-link></li>
           </ul>
         </nav>

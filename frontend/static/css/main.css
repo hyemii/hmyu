@@ -1832,7 +1832,6 @@ input, select, textarea {
 
 	form label {
 		display: block;
-		text-align: left;
 		margin-bottom: 0.5em;
 	}
 
@@ -1903,6 +1902,7 @@ input, select, textarea {
 
 	table {
 		width: 100%;
+    text-align: center;
 	}
 
 		table tbody tr:nth-child(2n+2) {
@@ -2171,6 +2171,10 @@ input, select, textarea {
 					#nav ul li a.router-link-exact-active span:before {
 						color: #e27689;
 					}
+
+          #nav ul li a.no span:before {
+            color: #41484c;
+          }
 
 /* Footer */
 

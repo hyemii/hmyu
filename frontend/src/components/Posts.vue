@@ -5,7 +5,7 @@
         <div class="container">
           <header>
             <h2>Posts</h2>
-            <router-link :to="'/inspost'" tag="button" style="float: right" v-if="user_type !== 'null'">작성</router-link><br>
+            <router-link :to="'/inspost'" tag="button" style="float: right" v-if="user_type === 'A' || user_type === 'G'">작성</router-link><br>
           </header>
           <table>
             <thead>
@@ -44,7 +44,7 @@
 
 <script>
 import bPagination from 'bootstrap-vue/es/components/pagination/pagination'
-
+import { urlVal } from '../lib/url'
 export default {
   name: 'Posts',
   data () {
@@ -68,10 +68,11 @@ export default {
   },
   methods: {
     getList () {
-      this.view = this.user_type
-      if (this.user_type === 'null') { this.view = 'G' }
+      if (!this.user_type || this.user_type === 'null') this.view = 'G'
+      else this.view = this.user_type
+
       this.$http.get(
-        'http://13.209.101.187:8080' + '/posts',
+        urlVal + '/posts',
         {
           params: {
             type: this.view,
@@ -87,6 +88,7 @@ export default {
         }
       }).catch(reason => {
         console.log('list error', reason)
+        alert('리스트를 불러올 수 없습니다.')
       })
     }
   }

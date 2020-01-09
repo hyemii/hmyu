@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { urlVal } from '../lib/url'
 export default {
   name: 'Home',
   data () {
@@ -48,7 +49,7 @@ export default {
       }
 
       this.$http.get(
-        'http://13.209.101.187:8080' + '/user/' + this.user_id
+        urlVal + '/user/' + this.user_id
       ).then(result => {
         console.log('get user', result)
         if (result.status === 200) {

@@ -18,7 +18,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <vue-editor ref="editor" id="editor" v-model="post.contents" style="background-color: white"></vue-editor>
+                <vue-editor id="editor" v-model="post.contents" useCustomImageHandler @image-added="handleImageAdded" :editor-toolbar="customToolbar" style="background-color: white"></vue-editor>
               </td>
             </tr>
           </table>
@@ -34,6 +34,7 @@
 
 <script>
 import { VueEditor } from 'vue2-editor'
+import { urlVal } from '../lib/url'
 export default {
   name: 'CreatePost',
   data () {
@@ -44,7 +45,12 @@ export default {
         status: 'O',
         regId: ''
       },
-      user_type: this.$cookies.get('user')
+      user_type: this.$cookies.get('user'),
+      customToolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['blockquote', 'code-block']
+      ]
     }
   },
   components: {
@@ -66,18 +72,42 @@ export default {
       console.log(this.post)
 
       this.$http.post(
-        'http://13.209.101.187:8080' + '/posts',
+        urlVal + '/posts',
         this.post
       ).then(result => {
         console.log('insert post', result)
         if (result.status === 200) {
-          alert('저장완료')
+          alert('저장 완료')
           this.$router.back()
         }
       }).catch(reason => {
         console.log('error insert', reason.response)
-        alert('저장실패')
+        alert('저장 실패')
       })
+    },
+    handleImageAdded (file, Editor, cursorLocation, resetUploader) {
+      var formData = new FormData()
+      formData.append('image', file)
+
+      console.log(formData.get('image'))
+      alert('append')
+
+      this.$http.post(
+        urlVal + '/image', formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+        .then(result => {
+          let url = result.data.url
+          Editor.insertEmbed(cursorLocation, 'image', url)
+          resetUploader()
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }

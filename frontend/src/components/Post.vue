@@ -8,7 +8,7 @@
               <td>{{post.subject}}</td>
             </tr>
             <tr>
-              <td><div v-html="post.contents"></div></td>
+              <td class="ql-snow"><div class="ql-editor" v-html="post.contents"></div></td>
             </tr>
           </table>
           <table v-if="flag">
@@ -26,7 +26,7 @@
             </tr>
             <tr>
               <td colspan="2" style="border: none; padding: 3px">
-                <vue-editor ref="editor" id="editor" v-model="post.contents" style="background-color: white"></vue-editor>
+                <vue-editor v-model="post.contents" :editor-toolbar="customToolbar" style="background-color: white"></vue-editor>
               </td>
             </tr>
           </table>
@@ -46,6 +46,7 @@
 
 <script>
 import { VueEditor } from 'vue2-editor'
+import { urlVal } from '../lib/url'
 export default {
   name: 'Post',
   data () {
@@ -60,7 +61,12 @@ export default {
       postId: this.$route.params.postId,
       flag: false,
       user_type: this.$cookies.get('user'),
-      user_id: this.$cookies.get('user_id')
+      user_id: this.$cookies.get('user_id'),
+      customToolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['blockquote', 'code-block']
+      ]
     }
   },
   components: {
@@ -69,7 +75,7 @@ export default {
   methods: {
     getPost () {
       this.$http.get(
-        'http://13.209.101.187:8080' + '/posts/' + this.postId
+        urlVal + '/posts/' + this.postId
       ).then(result => {
         if (result.status === 200) {
           console.log(result)
@@ -92,17 +98,17 @@ export default {
         }
 
         this.$http.put(
-          'http://13.209.101.187:8080' + '/posts/' + this.postId,
+          urlVal + '/posts/' + this.postId,
           this.post
         ).then(result => {
           console.log('modify put', result)
           if (result.status === 200) {
-            alert('수정완료')
+            alert('수정 완료')
             this.flag = false
           }
         }).catch(reason => {
           console.log('error modify', reason.response)
-          alert('수정실패')
+          alert('수정 실패')
         })
       }
       if (!this.flag) {
@@ -111,16 +117,16 @@ export default {
     },
     delPost () {
       this.$http.delete(
-        'http://13.209.101.187:8080' + '/posts/' + this.postId
+        urlVal + '/posts/' + this.postId
       ).then(result => {
         if (result.status === 200) {
           console.log(result)
-          alert('삭제완료')
+          alert('삭제 완료')
           this.$router.back()
         }
       }).catch(reason => {
         console.log(reason)
-        alert('삭제실패')
+        alert('삭제 실패')
       })
     }
   },

@@ -1,3 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../../static/css/font-awesome.min.css'
 import '../../static/css/main.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.core.css'
