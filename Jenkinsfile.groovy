@@ -1,27 +1,14 @@
-import groovy.json.JsonOutput
-
 node {
-
     def scmVars = checkout scm
     def values = scmVars.GIT_BRANCH.tokenize('/')
     String branchName = values[1]
 
     try {
-        if (branchName == 'master') {
-            gitCheckout(branchName)
-            GradleBuild()
-            NpmBuild()
-            unitTest()
-            //notifySlack('SUCCESS')
-        } else {
-            gitCheckout(branchName)
-            GradleBuild()
-            NpmBuild()
-            unitTest()
-            //notifySlack('SUCCESS')
-        }
+        gitCheckout(branchName)
+        GradleBuild()
+        NpmBuild()
+        unitTest()
     } catch (env) {
-        //notifySlack('FAIL')
         throw env
     }
 }
@@ -39,17 +26,6 @@ def GradleBuild() {
     }
 }
 
-def NpmBuild() {
-    stage('Npm Build') {
-        dir('frontend') {
-            env.NODEJS_HOME = "${tool 'nodejs'}"
-            // on linux / mac
-            env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
-            sh "npm --version"
-        }
-    }
-}
-
 def unitTest() {
     stage('Unit tests') {
         sh "./gradlew test"
@@ -58,19 +34,3 @@ def unitTest() {
         }
     }
 }
-
-/*def notifySlack(String buildStatus) {
-
-    def color
-
-    if (buildStatus == 'SUCCESS') {
-        color = '#1a9367'
-    } else if (buildStatus == 'UNSTABLE') {
-        color = '#FFFE89'
-    } else {
-        color = '#ff0000'
-    }
-
-    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
-    slackSend(channel: "${SLACK_CHANNEL}", color: color, message: msg)
-}*/
